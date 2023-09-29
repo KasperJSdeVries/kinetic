@@ -17,6 +17,10 @@ void shaderProgram_attach(ShaderProgram *this, const char *file_name, shader_typ
 void shaderProgram_link(ShaderProgram *this);
 void shaderProgram_use(ShaderProgram *this);
 
+void shaderProgram_draw(ShaderProgram *this);
+
+void shaderProgram_set_vertices(ShaderProgram *this, const float *vertices, size_t count);
+
 void shaderProgram_add_uniform(ShaderProgram *this, const char *varName);
 void shaderProgram_set_float(ShaderProgram *this, const char *varName, float value);
 void shaderProgram_set_vec3(ShaderProgram *this, const char *varName, vec3 value);

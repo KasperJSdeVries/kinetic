@@ -14,7 +14,10 @@ struct uniform_var {
 
 struct ShaderProgram {
     unsigned int pId;
-    struct uniform_var *uniform_vars;
+    struct uniform_var *uniform_vars;// darray
+    size_t vertex_count;
+    unsigned int vertex_array;
+    unsigned int vertex_buffer;
 };
 
 const char *readShaderFromFile(const char *file_name);
@@ -23,11 +26,13 @@ ShaderProgram *shaderProgram_create() {
     ShaderProgram *result = malloc(sizeof(struct ShaderProgram));
     result->pId = glCreateProgram();
     result->uniform_vars = darray_create(struct uniform_var);
+    result->vertex_count = 0;
     return result;
 }
 
 void shaderProgram_destroy(ShaderProgram *program) {
     glDeleteProgram(program->pId);
+    darray_destroy(program->uniform_vars);
     free(program);
 }
 
@@ -76,6 +81,24 @@ void shaderProgram_attach(ShaderProgram *this, const char *file_name, shader_typ
 
     glDeleteShader(shader_id);
 }
+
+void shaderProgram_draw(ShaderProgram *this) {
+    glBindVertexArray(this->vertex_array);
+    glDrawArrays(GL_TRIANGLES, 0, this->vertex_count);
+}
+
+void shaderProgram_set_vertices(ShaderProgram *this, const float *vertices, size_t count) {
+    glGenVertexArrays(1, &this->vertex_array);
+    glGenBuffers(1, &this->vertex_buffer);
+
+    glBindVertexArray(this->vertex_array);
+    glBindBuffer(GL_ARRAY_BUFFER, this->vertex_buffer);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * count, vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), NULL);
+}
+
 
 void shaderProgram_add_uniform(ShaderProgram *this, const char *varName) {
     struct uniform_var new_uniform = {
