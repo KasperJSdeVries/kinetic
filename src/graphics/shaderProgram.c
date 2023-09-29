@@ -88,6 +88,8 @@ void shaderProgram_draw(ShaderProgram *this) {
 }
 
 void shaderProgram_set_vertices(ShaderProgram *this, const float *vertices, size_t count) {
+    this->vertex_count = count;
+
     glGenVertexArrays(1, &this->vertex_array);
     glGenBuffers(1, &this->vertex_buffer);
 
