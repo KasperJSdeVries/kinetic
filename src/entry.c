@@ -35,9 +35,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 GLFWwindow *window;
 
-unsigned int vertexArray;
-unsigned int vertexBuffer;
-
 int main(int argc, char *argv[]) {
     if (!glfwInit()) return -1;
 
@@ -63,8 +60,6 @@ int main(int argc, char *argv[]) {
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        glBindVertexArray(vertexArray);
 
         game_loop();
 
