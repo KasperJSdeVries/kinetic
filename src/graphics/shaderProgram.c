@@ -47,13 +47,22 @@ void shaderProgram_use(ShaderProgram *this) {
     glUseProgram(this->pId);
 }
 
-void shaderProgram_attach(ShaderProgram *this, const char *file_name, unsigned int shader_type) {
-    unsigned int shaderId = glCreateShader(shader_type);
+void shaderProgram_attach(ShaderProgram *this, const char *file_name, shader_type shader_type) {
+    GLint shader_type_id;
+    switch (shader_type) {
+        case SHADER_TYPE_VERTEX:
+            shader_type_id = GL_VERTEX_SHADER;
+            break;
+        case SHADER_TYPE_FRAGMENT:
+            shader_type_id = GL_FRAGMENT_SHADER;
+            break;
+    }
+    unsigned int shader_id = glCreateShader(shader_type_id);
 
     const char *src = readShaderFromFile(file_name);
 
-    glShaderSource(shaderId, 1, &src, 0);
-    glCompileShader(shaderId);
+    glShaderSource(shader_id, 1, &src, 0);
+    glCompileShader(shader_id);
 
     int isCompiled;
     glGetShaderiv(this->pId, GL_COMPILE_STATUS, &isCompiled);
@@ -63,9 +72,9 @@ void shaderProgram_attach(ShaderProgram *this, const char *file_name, unsigned i
         fprintf(stderr, "Error Compiling Shader: \nShaderType: %d\n%s\n", shader_type, logMsg);
     }
 
-    glAttachShader(this->pId, shaderId);
+    glAttachShader(this->pId, shader_id);
 
-    glDeleteShader(shaderId);
+    glDeleteShader(shader_id);
 }
 
 void shaderProgram_add_uniform(ShaderProgram *this, const char *varName) {

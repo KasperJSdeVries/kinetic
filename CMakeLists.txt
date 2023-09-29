@@ -7,6 +7,7 @@ set(PROJECT_SOURCE_DIR ${PROJECT_DIR}/src)
 set(PROJECT_SOURCES
         ${PROJECT_SOURCE_DIR}/containers/darray.c
         ${PROJECT_SOURCE_DIR}/graphics/shaderProgram.c
+        ${PROJECT_SOURCE_DIR}/entry.c
 )
 
 add_subdirectory(lib)

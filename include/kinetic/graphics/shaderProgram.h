@@ -1,14 +1,19 @@
 #ifndef KINETIC_SHADERPROGRAM_H
 #define KINETIC_SHADERPROGRAM_H
 
-#include "cglm/vec3.h"
+#include "cglm/cglm.h"
+
+typedef enum shader_type {
+    SHADER_TYPE_VERTEX,
+    SHADER_TYPE_FRAGMENT,
+} shader_type;
 
 typedef struct ShaderProgram ShaderProgram;
 
 ShaderProgram *shaderProgram_create();
 void shaderProgram_destroy(ShaderProgram *program);
 
-void shaderProgram_attach(ShaderProgram *this, const char *file_name, unsigned int shader_type);
+void shaderProgram_attach(ShaderProgram *this, const char *file_name, shader_type shader_type);
 void shaderProgram_link(ShaderProgram *this);
 void shaderProgram_use(ShaderProgram *this);
 
